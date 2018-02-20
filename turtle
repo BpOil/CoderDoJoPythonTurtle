@@ -1,0 +1,85 @@
+import turtle
+import math
+import random
+
+#Create window that game with be played in
+window = turtle.Screen()
+window.bgcolor("lightgreen")
+
+#Draw the border
+border = turtle.Turtle()
+border.penup()
+border.speed(0)
+border.setposition(-150,150)
+border.pendown()
+for side in range(4):
+  border.forward(300)
+  border.right(90)
+border.hideturtle()
+
+#Create the player icon for the game
+player = turtle.Turtle()
+player.color("purple")
+player.shape("dragon")
+player.penup()
+player.speed(0)
+
+#create a goal
+goal = turtle.Turtle()
+goal.color("red")
+goal.shape("circle")
+goal.penup()
+goal.speed(0)
+goalSpeed = 1
+
+#define a speed for our player
+speed = 0
+#Define moving Functions
+def turnLeft():
+  player.left(30)
+  
+def turnRight():
+  player.right(30)
+  
+def increaseSpeed():
+  global speed
+  speed = speed + 1
+  
+def decreaseSpeed():
+  global speed
+  speed = speed - 1
+  
+#set up keyboard binding 
+window.listen()
+window.onkey(turnLeft, "Left")
+window.onkey(turnRight, "Right")
+window.onkey(increaseSpeed,"Up")
+window.onkey(decreaseSpeed, "Down")
+
+#run the game 
+while True:
+  player.forward(speed)
+  goal.forward(goalSpeed)
+  
+  #border checking player
+  if player.xcor() > 150 or player.xcor() < -150:
+    player.right(180)
+    
+  if player.ycor() > 150 or player.ycor() < -150:
+    player.right(180)
+  
+  #border checking goal
+  if goal.xcor() > 150 or goal.xcor() < -150:
+    goal.right(180)
+    
+  if goal.ycor() > 150 or goal.ycor() < -150:
+    goal.right(180)
+  
+  
+  #player - goal collision detection
+  captured = math.sqrt(math.pow(player.xcor()-goal.xcor(),2) + math.pow(player.ycor() - goal.ycor(),2))
+  if captured < 15:
+    goal.setposition(random.randint(-150,150), random.randint(-150,150))
+    goal.right(random.randint(0, 360))
+    goalSpeed += 1
+    
