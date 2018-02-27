@@ -1,0 +1,95 @@
+import turtle
+
+#Create window that game with be played in
+window = turtle.Screen()
+window.bgcolor("lightgreen")
+
+#draw border
+border = turtle.Turtle()
+border.penup()
+border.speed(0)
+border.setposition(-150, -150)
+border.pendown()
+for side in range(4):
+  border.forward(300)
+  border.left(90)
+border.hideturtle()
+
+#Create the player icon for the game
+player = turtle.Turtle()
+player.color("blue")
+player.shape("triangle")
+player.penup()
+player.speed(0)
+
+#create goal
+goal = turtle.Turtle()
+goal.color("red")
+goal.shape("circle")
+goal.penup()
+goal.speed(100)
+
+#1 set up score
+score = 0
+
+#set a speed
+speed = 1
+
+#Define Functions
+def turnLeft():
+  player.left(30)
+  
+def turnRight():
+  player.right(30)
+  
+def increaseSpeed():
+  global speed
+  speed = speed + 1
+  
+def decreaseSpeed():
+  global speed
+  speed = speed - 1
+
+#set keybinds
+window.listen()
+window.onkey(turnLeft, "Left")
+window.onkey(turnRight, "Right")
+window.onkey(increaseSpeed, "Up")
+window.onkey(decreaseSpeed, "Down")
+
+import math
+import random
+
+#move the player
+while True:
+  player.forward(speed)
+  goal.forward(2)
+  
+  #border checking
+  if player.xcor() > 150 or player.xcor() < -150:
+    player.right(180)
+  if player.ycor() > 150 or player.ycor() < -150:
+    player.right(180)
+    
+  #collsion detection
+  captured = math.sqrt(math.pow(player.xcor()-goal.xcor(),2) + math.pow(player.ycor() - goal.ycor(),2))
+  if captured < 15:
+    border.clear()
+    goal.setposition(random.randint(-150,150), random.randint(-150,150))
+    goal.right(random.randint(0,360))
+    #2 increment score
+    score += 1
+    #draw the score
+    #3 add the line border.undo()
+    border.penup()
+    border.hideturtle()
+    border.setposition(-150, 160)
+    scorestring = "Score: %s" %score
+    border.write(scorestring, False, align="left", font=("Arial",14,"normal"))
+  
+  #copy and paste player boundary checking
+  #border checking
+  if goal.xcor() > 148 or goal.xcor() < -148:
+    goal.right(180)
+  if goal.ycor() > 148 or goal.ycor() < -148:
+    goal.right(180)
